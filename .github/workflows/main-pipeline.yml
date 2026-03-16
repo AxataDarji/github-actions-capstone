@@ -2,7 +2,8 @@ name: Main Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
 
@@ -10,18 +11,18 @@ jobs:
     uses: ./.github/workflows/reusable-build-test.yml
     with:
       node_version: "18"
+      run_tests: true
 
   docker:
     needs: build-test
-
-    uses: ./.github/workflows/reusable-docker.yml 
+    uses: ./.github/workflows/reusable-docker.yml
 
     with:
       image_name: github-actions-capstone
       tag: latest
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
 
     secrets:
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_token: ${{ secrets.DOCKER_TOKEN }}
 
   deploy:
@@ -31,5 +32,4 @@ jobs:
 
     steps:
       - name: Deploy Step
-        run: |
-          echo "Deploying image ${{ needs.docker.outputs.image_url }} to production"
+        run: echo "Deploying image to production"
