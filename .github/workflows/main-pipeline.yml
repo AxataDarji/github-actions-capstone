@@ -14,14 +14,14 @@ jobs:
   docker:
     needs: build-test
 
-    uses: ./.github/workflows/reusable-docker.yml
+    uses: ./.github/workflows/reusable-docker.yml 
 
     with:
-      image_name: ${{ secrets.DOCKER_USERNAME }}/github-actions-capstone
+      image_name: github-actions-capstone
       tag: latest
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
 
     secrets:
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_token: ${{ secrets.DOCKER_TOKEN }}
 
   deploy:
