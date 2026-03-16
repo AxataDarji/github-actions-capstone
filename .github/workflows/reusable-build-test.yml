@@ -1,0 +1,45 @@
+name: Reusable Build and Test
+
+on:
+  workflow_call:
+    inputs:
+      node_version:
+        required: true
+        type: string
+      run_tests:
+        required: false
+        type: boolean
+        default: true
+
+    outputs:
+      test_result:
+        description: "Test Result"
+        value: ${{ jobs.build.outputs.test_result }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      test_result: ${{ steps.result.outputs.result }}
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        if: ${{ inputs.run_tests }}
+        run: npm test
+
+      - name: Set Output
+        id: result
+        run: echo "result=passed" >> $GITHUB_OUTPUT

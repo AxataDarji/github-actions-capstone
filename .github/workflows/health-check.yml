@@ -1,0 +1,35 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Pull Image
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/github-actions-capstone:latest
+
+      - name: Run Container
+        run: docker run -d -p 3000:3000 --name test-container ${{ secrets.DOCKER_USERNAME }}/github-actions-capstone:latest
+
+      - name: Wait
+        run: sleep 5
+
+      - name: Health Test
+        run: curl -f http://localhost:3000/health
+
+      - name: Stop Container
+        run: docker rm -f test-container
+
+      - name: Summary
+        run: |
+          echo "## Health Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "- Image- github-actions-capstone:latest" >> $GITHUB_STEP_SUMMARY
+          echo "- Status- PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "- Time- $(date)" >> $GITHUB_STEP_SUMMARY

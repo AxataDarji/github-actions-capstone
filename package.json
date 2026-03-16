@@ -1,0 +1,12 @@
+{
+  "name": "github-actions-capstone",
+  "version": "1.0.0",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "test": "bash test/test.sh"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
