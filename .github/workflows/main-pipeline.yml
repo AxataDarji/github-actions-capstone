@@ -23,7 +23,7 @@ jobs:
 
     secrets:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_token: ${{ secrets.DOCKER_TOKEN }
+      docker_token: ${{ secrets.DOCKER_TOKEN }}
 
   trivy-scan:
     name: Scan Docker Image for Vulnerabilities
@@ -38,7 +38,7 @@ jobs:
           format: 'table'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
-          
+
   deploy:
     needs: docker
     runs-on: ubuntu-latest
